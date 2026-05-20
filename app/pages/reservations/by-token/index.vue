@@ -2,6 +2,8 @@
 import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useReservationsStore } from '../../../../stores/reservations'
+import ButtonLg from '../../../components/buttons/ButtonLg.vue'
+import ButtonSm from '../../../components/buttons/ButtonSm.vue'
 
 const route = useRoute()
 const reservationsStore = useReservationsStore()
@@ -16,8 +18,7 @@ const getRouteToken = () => {
     return String(normalizedQueryToken).trim()
   }
 
-  const slug = Array.isArray(route.params.slug) ? route.params.slug[0] : route.params.slug
-  return String(slug || '').trim()
+  return ''
 }
 
 const statusMap = {
@@ -121,7 +122,7 @@ const initializeFromRoute = async () => {
 onMounted(initializeFromRoute)
 
 watch(
-  () => [route.params.slug, route.query.token],
+  () => route.query.token,
   async () => {
     await initializeFromRoute()
   }

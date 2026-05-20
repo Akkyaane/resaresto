@@ -2,6 +2,7 @@
 import { computed, reactive, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useReservationsStore } from '../../../stores/reservations'
+import ButtonLg from '../../components/buttons/ButtonLg.vue'
 
 const route = useRoute()
 const reservationsStore = useReservationsStore()
@@ -26,6 +27,18 @@ const slotDate = computed(() => queryValue('slotDate') || '-')
 const slotStartTime = computed(() => queryValue('slotStartTime') || '-')
 const slotEndTime = computed(() => queryValue('slotEndTime') || '-')
 
+const extractReservationToken = (response) => {
+	return (
+		response?.token ||
+		response?.reservation?.token ||
+		response?.data?.token ||
+		response?.reservationToken ||
+		response?.data?.reservationToken ||
+		reservationsStore.reservation?.token ||
+		''
+	)
+}
+
 const submitReservation = async () => {
 	formError.value = ''
 
@@ -44,7 +57,7 @@ const submitReservation = async () => {
 	}
 
 	const response = await reservationsStore.createReservation(payload)
-	const token = response?.token || response?.reservation?.token || response?.data?.token
+	const token = extractReservationToken(response)
 
 	if (token) {
 		await navigateTo({
@@ -57,7 +70,7 @@ const submitReservation = async () => {
 	}
 
 	if (!reservationsStore.error) {
-		formError.value = 'Reservation creee, mais token introuvable dans la reponse.'
+		formError.value = 'Reservation creee, mais token introuvable dans la reponse API.'
 	}
 }
 </script>

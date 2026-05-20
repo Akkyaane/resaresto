@@ -15,6 +15,7 @@
 
 <script setup>
 import { computed } from 'vue'
+import ButtonSm from './buttons/ButtonSm.vue'
 
 const props = defineProps({
   slot: {

@@ -9,7 +9,7 @@
           <NuxtLink to="/restaurants">Restaurants</NuxtLink>
         </li>
         <li>
-          <NuxtLink to="/reservations/by-token">Rechercher un restaurant</NuxtLink>
+          <NuxtLink to="/reservations/by-token">Rechercher une réservation</NuxtLink>
         </li>
       </ul>
     </div>
