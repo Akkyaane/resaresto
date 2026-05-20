@@ -20,8 +20,8 @@ defineProps({
       <p class="card-description">{{ restaurant.description }}</p>
 
       <div class="card-tags">
-        <span class="card-tag">{{ restaurant.cuisineType }}</span>
         <span class="card-tag card-tag--soft">{{ restaurant.address }}</span>
+        <span class="card-tag">{{ restaurant.cuisineType }}</span>
       </div>
 
       <NuxtLink :to="`/restaurants/${restaurant.slug || restaurant.id}`" class="card-button">

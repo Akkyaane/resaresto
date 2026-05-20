@@ -12,6 +12,14 @@ const dateFormatter = new Intl.DateTimeFormat('fr-FR', {
 	month: 'long'
 })
 
+const toIsoDate = (date) => {
+	const year = date.getFullYear()
+	const month = String(date.getMonth() + 1).padStart(2, '0')
+	const day = String(date.getDate()).padStart(2, '0')
+
+	return `${year}-${month}-${day}`
+}
+
 const dates = computed(() => {
 	const days = []
 	const base = new Date()
@@ -21,7 +29,7 @@ const dates = computed(() => {
 		day.setDate(base.getDate() + i)
 
 		days.push({
-			iso: day.toISOString().slice(0, 10),
+			iso: toIsoDate(day),
 			label: dateFormatter.format(day)
 		})
 	}
@@ -78,7 +86,7 @@ onMounted(() => {
 				</div>
 
 				<div class="booking-section">
-					<h2>Reservez maintenant !</h2>
+					<h2>Réservez maintenant !</h2>
 
 					<div class="dates-grid">
 						<button
@@ -136,6 +144,7 @@ onMounted(() => {
 
 .restaurant-content {
 	padding: 1.25rem;
+	border-bottom: 1px solid rgba(101, 118, 88, 0.2);
 }
 
 .restaurant-content h1 {
@@ -156,7 +165,6 @@ onMounted(() => {
 }
 
 .booking-section {
-	border-top: 1px solid rgba(101, 118, 88, 0.2);
 	padding: 1.25rem;
 }
 
