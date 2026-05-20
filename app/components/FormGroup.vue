@@ -1,7 +1,19 @@
 <template>
   <div class="form-group">
     <label :for="inputId" class="form-label">{{ label }}</label>
-    <input :id="inputId" :type="type" :placeholder="placeholder" class="form-input" />
+    <input
+      :id="inputId"
+      :type="type"
+      :placeholder="placeholder"
+      :value="modelValue"
+      :autocomplete="autocomplete"
+      :min="min"
+      :max="max"
+      :step="step"
+      :required="required"
+      class="form-input"
+      @input="$emit('update:modelValue', $event.target.value)"
+    />
   </div>
 </template>
 
@@ -23,7 +35,33 @@ defineProps({
     type: String,
     default: '',
   },
+  modelValue: {
+    type: [String, Number],
+    default: '',
+  },
+  autocomplete: {
+    type: String,
+    default: 'off',
+  },
+  min: {
+    type: [String, Number],
+    default: null,
+  },
+  max: {
+    type: [String, Number],
+    default: null,
+  },
+  step: {
+    type: [String, Number],
+    default: null,
+  },
+  required: {
+    type: Boolean,
+    default: false,
+  },
 });
+
+defineEmits(['update:modelValue'])
 </script>
 
 <style scoped>

@@ -1,14 +1,14 @@
 <template>
   <article class="slot-card">
     <p class="slot-line"><strong>Date :</strong> {{ formattedDate }}</p>
-    <p class="slot-line"><strong>Heure de debut :</strong> {{ slot.startTime }}</p>
+    <p class="slot-line"><strong>Heure de début :</strong> {{ slot.startTime }}</p>
     <p class="slot-line"><strong>Heure de fin :</strong> {{ slot.endTime }}</p>
-    <p class="slot-line"><strong>Capacite totale :</strong> {{ slot.totalCapacity }}</p>
-    <p class="slot-line"><strong>Couverts reserves :</strong> {{ slot.bookedCovers }}</p>
+    <p class="slot-line"><strong>Capacité totale :</strong> {{ slot.totalCapacity }}</p>
+    <p class="slot-line"><strong>Couverts réserves :</strong> {{ slot.bookedCovers }}</p>
     <p class="slot-line"><strong>Statut :</strong> {{ translatedStatus }}</p>
 
     <div class="slot-action">
-      <ButtonSm class="reserve-button" @click="$emit('reserve', slot)">Reserver</ButtonSm>
+      <ButtonSm class="reserve-button" @click="$emit('reserve', slot)">Réserver</ButtonSm>
     </div>
   </article>
 </template>
