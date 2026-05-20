@@ -8,13 +8,16 @@ export const useSlotsStore = defineStore('slots', {
   }),
 
   actions: {
-    async fetchByRestaurantAndDate(restaurantId, date) {
+    async fetchByRestaurantAndDate(slug, restaurantId, date) {
       this.loading = true
       this.error = null
 
       try {
-        const data = await $fetch(`http://localhost:3000/restaurants/${restaurantId}/slots`, {
-          query: { date }
+        const data = await $fetch(`http://localhost:3000/restaurants/${slug}/slots`, {
+          query: {
+            id: restaurantId,
+            date,
+          }
         })
 
         this.slots = Array.isArray(data) ? data : []

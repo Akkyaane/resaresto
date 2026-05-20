@@ -39,13 +39,24 @@ const dates = computed(() => {
 
 const selectDate = async (date) => {
 	const slug = route.params.slug
+
+	if (!restaurantsStore.restaurant && slug) {
+		await restaurantsStore.fetchBySlug(slug)
+	}
+
 	const restaurantId = restaurantsStore.restaurant?.id
+	const restaurantName = restaurantsStore.restaurant?.name
+
+	if (!restaurantId) {
+		return
+	}
 
 	await navigateTo({
 		path: `/restaurants/${slug}/slots`,
 		query: {
 			date,
-			restaurantId
+			restaurantId,
+			restaurantName
 		}
 	})
 }

@@ -44,9 +44,20 @@ const submitReservation = async () => {
 	}
 
 	const response = await reservationsStore.createReservation(payload)
+	const token = response?.token || response?.reservation?.token || response?.data?.token
 
-	if (response?.token) {
-		await navigateTo(`/reservations/by-token/${response.token}`)
+	if (token) {
+		await navigateTo({
+			path: '/reservations/by-token',
+			query: {
+				token,
+			},
+		})
+		return
+	}
+
+	if (!reservationsStore.error) {
+		formError.value = 'Reservation creee, mais token introuvable dans la reponse.'
 	}
 }
 </script>

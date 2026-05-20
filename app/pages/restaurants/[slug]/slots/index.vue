@@ -18,34 +18,47 @@ const selectedDate = computed(() => {
 	return Array.isArray(queryValue) ? queryValue[0] : queryValue
 })
 
+const restaurantName = computed(() => {
+	const queryValue = route.query.restaurantName
+	return Array.isArray(queryValue) ? queryValue[0] : queryValue
+})
+
 const loadData = async () => {
 	const slug = route.params.slug
-	const id = restaurantId.value
+	const queryRestaurantId = restaurantId.value
 	const date = selectedDate.value
 
-	if (!slug || !id || !date) {
+	if (!slug || !date) {
 		slotsStore.error = 'Parametres manquants pour charger les creneaux.'
 		return
 	}
 
-	await Promise.all([
-		restaurantsStore.fetchBySlug(slug),
-		slotsStore.fetchByRestaurantAndDate(id, date)
-	])
+	await restaurantsStore.fetchBySlug(slug)
+
+	const resolvedRestaurantId = queryRestaurantId || restaurantsStore.restaurant?.id
+
+	if (!resolvedRestaurantId) {
+		slotsStore.error = 'Restaurant introuvable pour charger les creneaux.'
+		return
+	}
+
+	await slotsStore.fetchByRestaurantAndDate(slug, resolvedRestaurantId, date)
 }
 
 const reserveSlot = async (slot) => {
-	const restaurant = restaurantsStore.restaurant
+	const id = restaurantId.value || restaurantsStore.restaurant?.id
+	const name = restaurantName.value || restaurantsStore.restaurant?.name
 
-	if (!restaurant || !slot) {
+	if (!id || !name || !slot) {
+		slotsStore.error = 'Informations manquantes pour reserver ce creneau.'
 		return
 	}
 
 	await navigateTo({
 		path: '/reservations',
 		query: {
-			restaurantId: restaurant.id,
-			restaurantName: restaurant.name,
+			restaurantId: id,
+			restaurantName: name,
 			timeSlotId: slot.id,
 			slotDate: slot.date,
 			slotStartTime: slot.startTime,
