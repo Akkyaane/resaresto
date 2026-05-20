@@ -3,8 +3,11 @@ import { defineStore } from 'pinia'
 export const useRestaurantsStore = defineStore('restaurants', {
   state: () => ({
     restaurants: [],
+    restaurant: null,
     loading: false,
-    error: null
+    error: null,
+    restaurantLoading: false,
+    restaurantError: null
   }),
 
   actions: {
@@ -20,6 +23,25 @@ export const useRestaurantsStore = defineStore('restaurants', {
         this.error = err.message || 'Erreur API'
       } finally {
         this.loading = false
+      }
+    },
+
+    async fetchBySlug(slug) {
+      this.restaurantLoading = true
+      this.restaurantError = null
+
+      try {
+        const data = await $fetch(`http://localhost:3000/restaurants/${slug}`)
+
+        this.restaurant = data
+      } catch (err) {
+        if (err?.status === 400 || err?.status === 404) {
+          this.restaurantError = err?.data?.message || err.message
+        } else {
+          this.restaurantError = err?.data?.message || err.message || 'Erreur API'
+        }
+      } finally {
+        this.restaurantLoading = false
       }
     }
   }
